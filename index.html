@@ -80,14 +80,14 @@
                             <button type="button" class="btn btn-outline-success fw-bold" id="btnCustomerAdd">Add</button>
                             <button type="button" class="btn btn-outline-warning fw-bold" id="btnCustomerUpdate">UPDATE</button>
                             <button type="button" class="btn btn-outline-danger fw-bold" id="btnCustomerDelete">DELETE</button>
-                            <button type="button" class="btn btn-danger fw-bold" id="btnCustomerCancel">Cancel</button>
+                            <button type="button" class="btn btn-warning fw-bold" id="btnCustomerGetAll">GetAll</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-8 col-lg-6">
-            <table class="table table-bordered table-hover border mt-2 p-3">
+            <table id="tblCustomer" class="table table-bordered table-hover border mt-2 p-3 ">
                 <thead class="bg-success text-white">
                 <tr>
                     <th scope="col">Customer ID</th>
@@ -96,7 +96,7 @@
                     <th scope="col">Customer Salary</th>
                 </tr>
                 </thead>
-                <tbody class="bg-secondary text-white" id="tblCustomer">
+                <tbody class="bg-secondary text-white" id="tblCustomerTbody">
                 </tbody>
             </table>
         </div>

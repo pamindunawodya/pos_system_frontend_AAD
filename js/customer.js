@@ -37,12 +37,28 @@ saveAjaxCustomerReq = (customerDataJSON) => {
         },
         success: (resp) => {
             console.log(resp);
+            // Call a function to update the table with the new customer data
+            updateTableWithNewCustomer(resp);
         },
         error: (e) => {
             console.error(e); // Log the error to the console for more details.
         }
     });
 };
+
+function updateTableWithNewCustomer(newCustomerData) {
+    const tableBody = document.getElementById("tblCustomer").getElementsByTagName('tbody')[0];
+    const newRow = tableBody.insertRow();
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+    const cell4 = newRow.insertCell(3);
+
+    cell1.innerHTML = newCustomerData.id;
+    cell2.innerHTML = newCustomerData.name;
+    cell3.innerHTML = newCustomerData.address;
+    cell4.innerHTML = newCustomerData.salary;
+}
 
 // Update Customer Ajax JSON
 $('#btnCustomerUpdate').on('click', () => {
@@ -124,6 +140,60 @@ deleteAjaxCustomerReq= (customerDataDeleteJSON) => {
         }
     });
 };
+
+$(document).ready(function() {
+    // Attach click event to the button
+    $('#btnCustomerGetAll').on('click', () => {
+        console.log("Get all customers");
+        getAllCustomers();
+    });
+});
+
+function getAllCustomers() {
+    // Send the AJAX GET request without any data in the request body
+    getAllAjaxCustomerReq();
+}
+
+function getAllAjaxCustomerReq() {
+    console.log("Load now");
+    $.ajax({
+        url: "http://localhost:8080/Mapping/CustomerHandle",
+        type: "GET",
+        dataType: "json",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        success: function(resp) {
+            console.log(resp);
+            // Call a function to add the data to the table
+            addDataToTable(resp);
+        },
+        error: function(e) {
+            console.error(e); // Log the error to the console for more details.
+        }
+    });
+}
+
+function addDataToTable(customerData) {
+    const tableBody = document.getElementById("tblCustomer").getElementsByTagName('tbody')[0];
+
+    // Clear the table body before adding new data
+    tableBody.innerHTML = "<tbody>";
+
+    // Loop through the customer data and add each customer to the table
+    customerData.forEach(customer => {
+        const newRow = tableBody.insertRow();
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+
+        cell1.innerHTML = customer.id;
+        cell2.innerHTML = customer.name;
+        cell3.innerHTML = customer.address;
+        cell4.innerHTML = customer.salary;
+    });
+}
 
 // Reg Ex
 let cusIdRegEx = /^C00\d+$/;
