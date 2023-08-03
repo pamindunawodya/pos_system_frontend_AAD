@@ -84,14 +84,14 @@ createUpdateCustomerObj = (id, name, address, salary) => {
     };
     const customerDataUpdateJSON = JSON.stringify(customerDataUpdate);
     console.log(customerDataUpdateJSON);
-   updateAjaxCustomerReq(customerDataUpdateJSON);
+    updateAjaxCustomerReq(customerDataUpdateJSON);
 };
 
 updateAjaxCustomerReq = (customerDataUpdateJSON) => {
     console.log("update now");
     $.ajax({
         url: "http://localhost:8080/Mapping/CustomerHandle",
-        type: "PUT", // Use "PUT" instead of "DELETE" for updating data
+        type: "PUT",
         data: customerDataUpdateJSON,
         dataType: "json",
         headers: {
@@ -99,12 +99,34 @@ updateAjaxCustomerReq = (customerDataUpdateJSON) => {
         },
         success: (resp) => {
             console.log(resp);
+            alert("Customer update Successful");
+
         },
         error: (e) => {
             console.error(e); // Log the error to the console for more details.
         }
     });
 };
+
+// Update Table on Edit
+// function updateTableOnEdit(updatedCustomerData) {
+// //     const tableBody = document.getElementById("tblCustomer").getElementsByTagName('tbody')[0];
+// //     const rows = tableBody.getElementsByTagName("tr");
+// //
+// //     for (let i = 0; i < rows.length; i++) {
+// //         const row = rows[i];
+// //         const cell = row.getElementsByTagName("td")[0]; // Assuming the ID is in the first column
+// //
+// //         if (cell && cell.innerHTML === updatedCustomerData.toString()) {
+// //             // Update the row with the edited customer data
+// //             row.cells[0].innerHTML = updatedCustomerData.id;
+// //             row.cells[1].innerHTML = updatedCustomerData.name;
+// //             row.cells[2].innerHTML = updatedCustomerData.address;
+// //             row.cells[3].innerHTML = updatedCustomerData.salary;
+// //             break; // Exit the loop after updating the row
+// //         }
+// //     }
+// // }
 
 // Delete Customer Ajax JSON
 $('#btnCustomerDelete').on('click', () => {
@@ -134,13 +156,32 @@ deleteAjaxCustomerReq= (customerDataDeleteJSON) => {
         },
         success: (resp) => {
             console.log(resp);
+          updateTableOnDelete(resp.id);
+            alert("Customer Delete Sucessfull");
         },
         error: (e) => {
             console.error(e); // Log the error to the console for more details.
         }
     });
 };
+//load table current customer delete
 
+function updateTableOnDelete(deletedCustomerId) {
+    const tableBody = document.getElementById("tblCustomerTbody");
+    const rows = tableBody.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const cell = row.getElementsByTagName("td")[0]; // Assuming the ID is in the first column
+
+        if (cell && cell.innerHTML === deletedCustomerId) {
+            // Found the row with the deleted customer ID, so remove the row
+            tableBody.removeChild(row);
+            break; // Exit the loop after removing the row
+        }
+    }
+}
+
+//Get All Customer
 $(document).ready(function() {
     // Attach click event to the button
     $('#btnCustomerGetAll').on('click', () => {

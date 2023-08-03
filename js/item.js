@@ -125,6 +125,63 @@ deleteAjaxItemReq = (itemDataDeleteJson) => {
     });
 };
 
+//Load all Items
+
+$(document).ready(function() {
+    // Attach click event to the button
+    $('#btnGetAllItem').on('click', () => {
+        console.log("Load all Items");
+        getAllItems();
+    });
+});
+function getAllItems(){
+
+
+    // Send the AJAX GET request without any data in the request body
+    getAllAjaxItemReq();
+}
+
+function getAllAjaxItemReq() {
+    console.log("Load now");
+    $.ajax({
+        url: "http://localhost:8080/Mapping/ItemHandle",
+        type: "GET",
+        dataType: "json",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        success: function(resp) {
+            console.log(resp);
+            // Call a function to add the data to the table
+            addDataToItemTable(resp);
+        },
+        error: function(e) {
+            console.error(e); // Log the error to the console for more details.
+        }
+    });
+}
+
+function addDataToItemTable(itemDta) {
+    const tableBody = document.getElementById("tblItems").getElementsByTagName('tbody')[0];
+
+    // Clear the table body before adding new data
+    tableBody.innerHTML = "<tbody>";
+
+    // Loop through the customer data and add each item to the table
+    itemDta.forEach(item => {
+        const newRow = tableBody.insertRow();
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+
+        cell1.innerHTML = item.code;
+        cell2.innerHTML = item.description;
+        cell3.innerHTML = item.qty;
+        cell4.innerHTML = item.price;
+    });
+}
+
 
 
 // Reg Ex
